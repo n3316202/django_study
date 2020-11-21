@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>에디터</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.js"></script>
+        <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <style type="text/css" media="screen">
+       #editor {
+           height: 300px;
+       }
+   </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 <h3 class="panel-title">수강생</h3>
+            </div>
+            <div class="panel-body">
+                {% for member in members %}
+                    <button type="button" class="btn btn-success btn-member" data-id="{{member.id}}">{{member.ip}}:{{member.name}}</button>
+                {% endfor %}
+
+            </div>
+<!--            <div class="col text-center">
+                <input id="source_code" class="btn btn-primary" type="submit" value="Submit">
+            </div>-->
+           <!-- <div class="text-center">-&#45;&#45;End of editor-&#45;&#45;</div>-->
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 <h4 id="id-panel-title" class="panel-title">에디터</h4>
+            </div>
+             <div class="panel-body">
+                 <div id="editor">public class HelloWorld {
+    public static void main(String args[]) {
+        System.out.println("Hello World");
+    }
+}</div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <!-- disabled가 있으면 마우스 커서가 금지표시로 바뀐다. -->
+                        <li class="page-list" data-num="0" data-label="pre">
+                            <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                            </a>
+                        </li>
+                        <li class="page-list" data-num="0" data-label="next">
+                            <a href="#" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 <h3 class="panel-title">객관식</h3>
+            </div>
+            <div class="panel-body">
+                {% for member in members %}
+                    <button type="button" class="btn btn-success btn-choice" data-id="{{member.id}}">{{member.ip}}:{{member.name}}</button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.rawgit.com/ajaxorg/ace-builds/v1.1.5/src-min-noconflict/ace.js"></script>
+<script src="https://cdn.rawgit.com/ajaxorg/ace-builds/v1.1.5/src-min-noconflict/ext-language_tools.js"></script>
+<script>
+$(document).ready(function() {
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/java");
+    document.getElementById('editor').style.fontSize='15px';
+
+    console.log(editor.getSession().getValue());
+
+    var member_id;
+
+    $(".btn-member").click(function() {
+        //data(Key)로 저장된 data읽기
+        member_id = $(this).data("id");
+
+        $.ajax({
+            type: "GET",
+            url: member_id,
+            dataType:'json',
+            success: function(data) {
+                console.log(data);
+                console.log(data[0].pk);
+                console.log(data[0].fields.member);
+                console.log(data[0].fields.content);
+                editor.session.setValue(data[0].fields.content)
+
+                $('.page-list').each(function(index, item){
+                    $(this).data("num",data[0].pk);
+                    console.log($(this).data("num"));
+                });
+           },
+           error: function onError (error) {
+                console.log(error);
+           }
+       });
+    });
+
+    $(".page-list").click(function() {
+
+        var content_num = $(this).data("num");
+        var page_label = $(this).data("label");
+        var url = member_id + '/' + content_num + '/' + page_label;
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType:'json',
+            success: function(data) {
+                console.log(data);
+                console.log(data[0].pk);
+                console.log(data[0].fields.member);
+                console.log(data[0].fields.content);
+                $('.page-list').each(function(index, item){
+                    $(this).data("num",data[0].pk);
+                    console.log($(this).data("num"));
+                });
+
+                editor.session.setValue(data[0].fields.content);
+                var text = "에디터" +" 회원번호" + data[0].fields.member +" 글번호" + data[0].pk +  " " + data[0].fields.create_date;
+                $('#id-panel-title').text(text);
+
+           },
+           error: function onError (error) {
+                console.log(error);
+                var text = "에디터" + " " + "--더이상 데이터가 없습니다--";
+                $('#id-panel-title').text(text);
+           }
+       });
+
+    });
+});
+/*
+$(document).ready(function() {
+    $(".btn-member").click(function() {
+        //data(Key)로 저장된 data읽기
+        var id = $(this).data("id");
+        console.log(id);
+    });
+});
+*/
+</script>
+
+</html>
