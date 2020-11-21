@@ -8,7 +8,7 @@ import simplejson as json
 # Create your views here.
 from answer.models import Member, Answer
 
-#n3316202 ##nn6729##
+
 def index(request):
     """
      adminInfo main 출력
