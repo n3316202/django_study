@@ -66,7 +66,9 @@
             </div>
             <div class="panel-body">
                 {% for member in members %}
-                    <button type="button" class="btn btn-success btn-choice" data-id="{{member.id}}">{{member.ip}}:{{member.name}}</button>
+                    {% for choice in member.choice_set.all %}
+                        <button type="button" class="btn btn-success btn-choice" data-id="{{member.id}}">{{member.ip}}:{{member.name}}:{{ choice.content }}</button>
+                    {% endfor %}
                 {% endfor %}
             </div>
         </div>

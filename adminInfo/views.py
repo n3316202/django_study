@@ -6,7 +6,8 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import simplejson as json
 # Create your views here.
-from answer.models import Member, Answer
+from answer.models import Member, Answer, Choice
+
 
 def index(request):
     """
@@ -15,6 +16,9 @@ def index(request):
     members = Member.objects.all()
 
     print("멤버총갯수:" + str(Member.objects.count()))
+
+    # 참고 : http://oniondev.egloos.com/9869119
+
     context = {'members': members}
 
     return render(request, 'adminInfo/adminInfo_main.html', context)
