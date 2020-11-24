@@ -8,7 +8,7 @@ class Member(models.Model):
     create_date = models.DateTimeField()
 
     def __str__(self):  # 추가 return self.title
-        return self.ip + ":" +self.name
+        return self.ip + ":" + self.name
 
 
 class Answer(models.Model):
