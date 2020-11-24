@@ -7,6 +7,9 @@ class Member(models.Model):
     ip = models.CharField(max_length=20)
     create_date = models.DateTimeField()
 
+    def __str__(self):  # 추가 return self.title
+        return self.ip + ":" +self.name
+
 
 class Answer(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
