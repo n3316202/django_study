@@ -23,10 +23,10 @@
                 <div class="signup-content">
                     <div class="signup-form">
                         <h2 class="form-title">Sign up</h2>
-                        <form method="POST" action="/signup" class="register-form" id="register-form">
+                        <form method="POST" action="/signup/" class="register-form" id="register-form">
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="name" id="name" placeholder="Your Name"/>
+                                <input type="text" name="name" id="name" placeholder="한글로 이름입력"/>
                             </div>
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
@@ -51,31 +51,31 @@
                     </div>
                     <div class="signup-image">
                         <figure><img src="{% static 'signup/images/signup-image.jpg' %}" alt="sing up image"></figure>
-                        <a href="#" class="signup-image-link">I am already member</a>
+                        <a href="/" class="signup-image-link">I am already member</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!– Sign up form –>
+        <!– Sign in form –>
         <section class="sign-in">
             <div class="container">
                 <div class="signin-content">
                     <div class="signin-image">
                         <figure><img src="{% static 'signup/images/signin-image.jpg' %}" alt="sing up image"></figure>
-                        <a href="#" class="signup-image-link">Create an account</a>
+                        <a id="a_sign_in" href="#" class="signup-image-link">Create an account</a>
                     </div>
 
                     <div class="signin-form">
-                        <h2 class="form-title">Sign up</h2>
-                        <form method="POST" class="register-form" id="login-form">
+                        <h2 class="form-title">Sign In</h2>
+                        <form method="POST" action="/login/" class="register-form" id="login-form">
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="your_name" id="your_name" placeholder="Your Name"/>
+                                <input type="text" name="name" id="your_name" placeholder="Your Name"/>
                             </div>
                             <div class="form-group">
                                 <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                                <input type="password" name="password" id="your_pass" placeholder="Password"/>
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
@@ -104,4 +104,18 @@
     <script src="{% static 'signup/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'signup/js/main.js' %}"></script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+<script>
+$(document).ready(function() {
+    $("#a_sign_in").click(function(e) {
+        e.preventDefault();
+
+        $(".signup").show();
+        $(".sign-in").hide();
+    });
+});
+
+$(document).ready(function() {
+    $(".signup").hide();
+});
+</script>
 </html>

@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from answer.models import Member, Answer, Choice
@@ -9,7 +9,7 @@ def index(request):
     """
      answer main 출력
     """
-    return render(request, 'answer/answer_main.html')
+    return redirect('/')
 
 
 def answer_code(request):
@@ -23,11 +23,12 @@ def answer_code(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
 
-    print(ip)
-    member_create(ip)
+    #print(ip)
+    #member_create(ip)
 
+    user_id = request.session.get('id')
     code = request.POST['code']
-    answer_create(ip, code)
+    answer_create(user_id, code)
 
     print(code)
     return render(request, 'answer/sample_ace.html')
@@ -44,11 +45,13 @@ def answer_choice(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
 
-    print(ip)
-    member_create(ip)
+    #print(ip)
+    #member_create(ip)
+
+    user_id = request.session.get('id')
 
     choice = request.POST['choice']
-    choice_create(ip, choice)
+    choice_create(user_id, choice)
 
     print(choice)
     return render(request, 'answer/sample_ace.html')
@@ -66,21 +69,21 @@ def member_create(ip):
         member.save()
 
 
-def answer_create(ip, code):
+def answer_create(user_id, code):
     """
     답변 생성
     """
-    member = get_object_or_404(Member, ip=ip)
+    member = get_object_or_404(Member, name=user_id)
     answer = Answer(member=member, content=code, create_date=timezone.now())
     answer.save()
 
 
-def choice_create(ip, content):
+def choice_create(user_id, content):
     """
     객관식 답변 생성
     """
-    member = get_object_or_404(Member, ip=ip)
-    print("멤버아이피:" + member.ip)
+    member = get_object_or_404(Member, name=user_id)
+    print("멤버이름:" + member.name)
 
     choice = Choice.objects.filter(member_id=member.id)
 

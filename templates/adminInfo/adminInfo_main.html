@@ -23,7 +23,7 @@
             </div>
             <div class="panel-body">
                 {% for member in members %}
-                    <button type="button" class="btn btn-success btn-member" data-id="{{member.id}}">{{member.ip}}:{{member.name}}</button>
+                    <button type="button" class="btn btn-success btn-member" data-id="{{member.id}}">{{member.name}}:</button>
                 {% endfor %}
 
             </div>
@@ -67,11 +67,22 @@
             <div class="panel-body">
                 {% for member in members %}
                     {% for choice in member.choice_set.all %}
-                        <button type="button" class="btn btn-success btn-choice" data-id="{{member.id}}">{{member.ip}}:{{member.name}}:{{ choice.content }}</button>
+                        <button type="button" class="btn btn-success btn-choice" data-id="{{member.id}}">{{member.name}}:{{ choice.content }}</button>
                     {% endfor %}
                 {% endfor %}
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 <h3 class="panel-title">로그인 시간</h3>
+            </div>
+            <div class="panel-body">
+                {% for member in members %}
+                    <button type="button" class="btn btn-success btn-choice" data-id="{{member.id}}">{{member.name}}:{{ member.login_date }}</button>
+                {% endfor %}
+            </div>
+        </div>
+
     </div>
 </body>
 <script src="https://cdn.rawgit.com/ajaxorg/ace-builds/v1.1.5/src-min-noconflict/ace.js"></script>
