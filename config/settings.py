@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # ---------------------------------------- [edit] ---------------------------------------- #
     'answer.apps.AnswerConfig',
     'adminInfo.apps.AdmininfoConfig',
+    'login.apps.LoginConfig',
     # ---------------------------------------------------------------------------------------- #
     'django.contrib.admin',
     'django.contrib.auth',

@@ -5,10 +5,11 @@ from django.db import models
 class Member(models.Model):
     name = models.CharField(max_length=100)
     ip = models.CharField(max_length=20)
+    email = models.CharField(max_length=20)
     create_date = models.DateTimeField()
 
     def __str__(self):  # 추가 return self.title
-        return self.ip + ":" + self.name
+        return  self.name + ":" + self.email
 
 
 class Answer(models.Model):
